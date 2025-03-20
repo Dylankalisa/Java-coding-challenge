@@ -1,17 +1,10 @@
 import java.util.Random;
 
 public class SubscriptionReminder {
+    
     public static void main(String[] args) {
-        Random random = new Random();
-        int daysUntilExpiration = random.nextInt(12); // Generates a number from 0 to 11
-        int discountPercentage = 0;
-
-        // Determine discount
-        if (daysUntilExpiration == 1) {
-            discountPercentage = 20;
-        } else if (daysUntilExpiration > 1 && daysUntilExpiration <= 5) {
-            discountPercentage = 10;
-        }
+        int daysUntilExpiration = generateRandomExpiration();
+        int discountPercentage = getDiscountPercentage(daysUntilExpiration);
 
         // Message logic using switch-case for cleaner structure
         switch (daysUntilExpiration) {
@@ -20,18 +13,43 @@ public class SubscriptionReminder {
                 break;
             case 1:
                 System.out.println("Your subscription expires within a day!");
-                System.out.println("Renew now and save " + discountPercentage + "%!");
+                displayRenewalMessage(discountPercentage);
+                break;
+            case 2: case 3: case 4: case 5:
+                System.out.println("Your subscription expires in: " + daysUntilExpiration + " days.");
+                displayRenewalMessage(discountPercentage);
+                break;
+            case 6: case 7: case 8: case 9: case 10:
+                System.out.println("Your subscription expires in: " + daysUntilExpiration + " days.");
+                System.out.println("Your subscription will expire soon. Renew now!");
                 break;
             default:
-                if (daysUntilExpiration <= 5) {
-                    System.out.println("Your subscription expires in: " + daysUntilExpiration + " days.");
-                    System.out.println("Renew now and save " + discountPercentage + "%!");
-                } else if (daysUntilExpiration <= 10) {
-                    System.out.println("Your subscription expires in: " + daysUntilExpiration + " days.");
-                    System.out.println("Your subscription will expire soon. Renew now!");
-                } else {
-                    System.out.println("Your subscription is active for now. Stay ahead and renew in advance!");
-                }
+                System.out.println("Your subscription is active for now. Stay ahead and renew in advance!");
+        }
+    }
+
+    // Generates random days until expiration (0 to 11)
+    private static int generateRandomExpiration() {
+        Random random = new Random();
+        return random.nextInt(12); 
+    }
+
+    // Returns discount based on days until expiration
+    private static int getDiscountPercentage(int daysUntilExpiration) {
+        if (daysUntilExpiration == 1) {
+            return 20;
+        } else if (daysUntilExpiration > 1 && daysUntilExpiration <= 5) {
+            return 10;
+        }
+        return 0;
+    }
+
+    // Displays the renewal message
+    private static void displayRenewalMessage(int discountPercentage) {
+        if (discountPercentage > 0) {
+            System.out.println("Renew now and save " + discountPercentage + "%!");
+        } else {
+            System.out.println("Renew now to continue enjoying uninterrupted service.");
         }
     }
 }
